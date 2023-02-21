@@ -12,25 +12,81 @@
 
 /* The devicetree node identifier for the "led0" alias. */
 #define LED0_NODE DT_ALIAS(led0)
-
+#define LED1_NODE DT_ALIAS(led1)
+#define LED2_NODE DT_ALIAS(led2)
+#define LED3_NODE DT_ALIAS(led3)
+#define LED4_NODE DT_ALIAS(led4)
+/* Button Config*/
+#define BUTTON0_NODE DT_ALIAS(button0)
+#define BUTTON1_NODE DT_ALIAS(button1)
+#define BUTTON2_NODE DT_ALIAS(button2)
+#define BUTTON3_NODE DT_ALIAS(button3)
 /*
  * A build error on this line means your board is unsupported.
  * See the sample documentation for information on how to fix this.
  */
-static const struct gpio_dt_spec led = GPIO_DT_SPEC_GET(LED0_NODE, gpios);
+/*LED Config*/
+static const struct gpio_dt_spec heartbeat_led = GPIO_DT_SPEC_GET(LED0_NODE, gpios);
+static const struct gpio_dt_spec buzzer_led = GPIO_DT_SPEC_GET(LED1_NODE, gpios);
+static const struct gpio_dt_spec ivdrip_led = GPIO_DT_SPEC_GET(LED2_NODE, gpios);
+static const struct gpio_dt_spec alarm_led = GPIO_DT_SPEC_GET(LED3_NODE, gpios);
+static const struct gpio_dt_spec error_led = GPIO_DT_SPEC_GET(LED4_NODE, gpios);
+/*BUTTON Config*/
+static const struct gpio_dt_spec sleep = GPIO_DT_SPEC_GET(BUTTON0_NODE, gpios);
+static const struct gpio_dt_spec freq_up = GPIO_DT_SPEC_GET(BUTTON1_NODE, gpios);
+static const struct gpio_dt_spec freq_down = GPIO_DT_SPEC_GET(BUTTON2_NODE, gpios);
+static const struct gpio_dt_spec reset = GPIO_DT_SPEC_GET(BUTTON3_NODE, gpios);
 
 void main(void)
 {
 	int ret;
-
-	if (!device_is_ready(led.port)) {
+	/*This should check for the entire gpio0 interface*/
+	if (!device_is_ready(heartbeat_led.port)) {
 		return;
 	}
-
-	ret = gpio_pin_configure_dt(&led, GPIO_OUTPUT_ACTIVE);
+	/*This should check for the entire gpio1 interface*/
+	if (!device_is_ready(error_led.port)) {
+		return;
+	}
+	/*Intiliaze LED Pins*/
+	ret = gpio_pin_configure_dt(&heartbeat_led, GPIO_OUTPUT_ACTIVE);
 	if (ret < 0) {
 		return;
 	}
+	ret = gpio_pin_configure_dt(&buzzer_led, GPIO_OUTPUT_ACTIVE);
+	if (ret < 0) {
+		return;
+	}
+	ret = gpio_pin_configure_dt(&ivdrip_led, GPIO_OUTPUT_ACTIVE);
+	if (ret < 0) {
+		return;
+	}
+	ret = gpio_pin_configure_dt(&alarm_led, GPIO_OUTPUT_ACTIVE);
+	if (ret < 0) {
+		return;
+	}
+	ret = gpio_pin_configure_dt(&error_led, GPIO_OUTPUT_ACTIVE);
+	if (ret < 0) {
+		return;
+	}
+	/* Button Config Just in Case
+	ret = gpio_pin_configure_dt(&sleep, GPIO_INPUT);
+	if (ret < 0){
+		return;
+	}
+	ret = gpio_pin_configure_dt(&freq_up, GPIO_INPUT);
+	if (ret < 0){
+		return;
+	}
+	ret = gpio_pin_configure_dt(&freq_down, GPIO_INPUT);
+	if (ret < 0){
+		return;
+	}
+	ret = gpio_pin_configure_dt(&reset, GPIO_INPUT);
+	if (ret < 0){
+		return;
+	}
+	*/
 
 	while (1) {
 		ret = gpio_pin_toggle_dt(&led);
