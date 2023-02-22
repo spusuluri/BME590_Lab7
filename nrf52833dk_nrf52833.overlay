@@ -14,16 +14,16 @@
 / {
     aliases {
         /*This is number 2*/
-        heartbeat: &led0; /*P0.13*/
-        buzzer: &led1; /*P0.14*/
-        ivdrip: &led2; /*P0.15*/
-        alarm: &led3; /*P0.16*/
-        error: &led4; /*P1.3*/
+        heartbeat= &led0; /*P0.13*/
+        buzzer= &led1; /*P0.14*/
+        ivdrip= &led2; /*P0.15*/
+        alarm= &led3; /*P0.16*/
+        error= &led4; /*P1.3*/
         /*Number 3 of Assignment*/
-        button0: &button0; /*P0.11*/
-        button1: &button1; /*P0.12*/
-        button2: &button2; /*P0.24*/
-        button3: &button3; /*P0.25*/
+        button0= &button0; /*P0.11*/
+        button1= &button1; /*P0.12*/
+        button2= &button2; /*P0.24*/
+        button3= &button3; /*P0.25*/
     };
     leds{
         compatible = "gpio-leds";
