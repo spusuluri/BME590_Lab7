@@ -12,11 +12,11 @@
 #define SLEEP_TIME_MS   1000
 
 /* The devicetree node identifier for the "led0" alias. */
-#define LED0_NODE DT_ALIAS(led0)
-#define LED1_NODE DT_ALIAS(led1)
-#define LED2_NODE DT_ALIAS(led2)
-#define LED3_NODE DT_ALIAS(led3)
-#define LED4_NODE DT_ALIAS(led4)
+#define LED0_NODE DT_ALIAS(heartbeat)
+#define LED1_NODE DT_ALIAS(buzzer)
+#define LED2_NODE DT_ALIAS(ivdrip)
+#define LED3_NODE DT_ALIAS(alarm)
+#define LED4_NODE DT_ALIAS(error)
 /* Button Config*/
 #define BUTTON0_NODE DT_ALIAS(button0)
 #define BUTTON1_NODE DT_ALIAS(button1)
