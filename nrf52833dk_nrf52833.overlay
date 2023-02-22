@@ -25,12 +25,11 @@
         button2: &button2; /*P0.24*/
         button3: &button3; /*P0.25*/
     };
-};
-
-&gpio1 {
-    compatible = "gpio-leds";
-    led4: led_4{
-        gpios = < &gpio1 3 GPIO_ACTIVE_LOW >;
-        label = "ERROR LED";
+    leds{
+        compatible = "gpio-leds";
+        led4: led_4{
+            gpios = < &gpio1 3 GPIO_ACTIVE_LOW >;
+            label = "ERROR LED";
+        };
     };
 };

@@ -69,7 +69,7 @@ void main(void)
 	if (ret < 0) {
 		return;
 	}
-	/* Button Config Just in Case
+	/*Button Config*/
 	ret = gpio_pin_configure_dt(&sleep, GPIO_INPUT);
 	if (ret < 0){
 		return;
@@ -86,7 +86,6 @@ void main(void)
 	if (ret < 0){
 		return;
 	}
-	*/
 
 	while (1) {
 		ret = gpio_pin_toggle_dt(&led);
