@@ -8,6 +8,7 @@
 #include <zephyr/drivers/gpio.h>
 
 /* 1000 msec = 1 sec */
+/*Put #define stuff here*/
 #define SLEEP_TIME_MS   1000
 
 /* The devicetree node identifier for the "led0" alias. */
@@ -36,6 +37,33 @@ static const struct gpio_dt_spec sleep = GPIO_DT_SPEC_GET(BUTTON0_NODE, gpios);
 static const struct gpio_dt_spec freq_up = GPIO_DT_SPEC_GET(BUTTON1_NODE, gpios);
 static const struct gpio_dt_spec freq_down = GPIO_DT_SPEC_GET(BUTTON2_NODE, gpios);
 static const struct gpio_dt_spec reset = GPIO_DT_SPEC_GET(BUTTON3_NODE, gpios);
+/*Button Bool Values Here*/
+static bool sleep_detected = 0;
+static bool freq_up_detected = 0;
+static bool freq_down_detected = 0;
+static bool reset_detected = 0;
+/*Declarations Here*/
+void sleep_callback(const struct device *dev, struct gpio_callback *cb, uint32_t pins);
+void freq_up_callback(const struct device *dev, struct gpio_callback *cb, uint32_t pins);
+void freq_down_callback(const struct device *dev, struct gpio_callback *cb, uint32_t pins);
+void reset_callback(const struct device *dev, struct gpio_callback *cb, uint32_t pins);
+/* Callback Functions*/
+void sleep_callback(const struct device *dev, struct gpio_callback *cb, uint32_t pins)
+{
+	sleep_detected = 1;
+}
+void freq_up_callback(const struct device *dev, struct gpio_callback *cb, uint32_t pins)
+{
+	freq_up_detected = 1;
+}
+void freq_down_callback(const struct device *dev, struct gpio_callback *cb, uint32_t pins)
+{
+	freq_down_detected = 1;
+}
+void reset_callback(const struct device *dev, struct gpio_callback *cb, uint32_t pins)
+{
+	reset_detected = 1;
+}
 
 void main(void)
 {
