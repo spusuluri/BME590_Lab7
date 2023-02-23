@@ -10,6 +10,7 @@
 /* 1000 msec = 1 sec */
 /*Put #define stuff here*/
 #define SLEEP_TIME_MS   1000
+#define LED_ON_TIME_S 1
 
 /* The devicetree node identifier for the "led0" alias. */
 #define LED0_NODE DT_ALIAS(heartbeat)
@@ -114,7 +115,33 @@ void main(void)
 	if (ret < 0){
 		return;
 	}
-
+	/*Associate Callback with GPIO Pin*/
+	int err;
+	err = gpio_pin_interrupt_configure_dt(&sleep, GPIO_INT_EDGE_TO_ACTIVE);
+	if (err < 0){
+		return;
+	}	
+	gpio_init_callback(&sleep_cb, sleep_callback, BIT(sleep.pin));
+	gpio_add_callback(sleep.port, &sleep_cb);
+	err = gpio_pin_interrupt_configure_dt(&freq_up, GPIO_INT_EDGE_TO_ACTIVE);
+	if (err < 0){
+		return;
+	}	
+	gpio_init_callback(&freq_up_cb, freq_up_callback, BIT(freq_up.pin));
+	gpio_add_callback(freq_up.port, &freq_up_cb);
+	err = gpio_pin_interrupt_configure_dt(&freq_down, GPIO_INT_EDGE_TO_ACTIVE);
+	if (err < 0){
+		return;
+	}	
+	gpio_init_callback(&freq_down_cb, freq_down_callback, BIT(freq_down.pin));
+	gpio_add_callback(freq_down.port, &freq_down_cb);
+	err = gpio_pin_interrupt_configure_dt(&reset, GPIO_INT_EDGE_TO_ACTIVE);
+	if (err < 0){
+		return;
+	}	
+	gpio_init_callback(&reset_cb, reset_callback, BIT(reset.pin));
+	gpio_add_callback(reset.port, &reset_cb);
+	
 	while (1) {
 		ret = gpio_pin_toggle_dt(&heartbeat_led);
 		if (ret < 0) {
