@@ -9,7 +9,8 @@
 
 /* 1000 msec = 1 sec */
 /*Put #define stuff here*/
-#define SLEEP_TIME_MS   1000
+#define LED_SLEEP_TIME_MS   500
+#define LED_ON_TIME_MS 500
 #define LED_ON_TIME_S 1
 
 /* The devicetree node identifier for the "led0" alias. */
@@ -148,10 +149,9 @@ void main(void)
 	gpio_add_callback(reset.port, &reset_cb);
 
 	while (1) {
-		ret = gpio_pin_toggle_dt(&heartbeat_led);
-		if (ret < 0) {
-			return;
-		}
-		k_msleep(SLEEP_TIME_MS);
+		gpio_pin_toggle_dt(&heartbeat_led);
+		k_msleep(LED_ON_TIME_MS);
+		gpio_pin_toggle_dt(&heartbeat_led)
+		k_msleep(LED_SLEEP_TIME_MS)
 	}
 }
