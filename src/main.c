@@ -38,6 +38,11 @@ static const struct gpio_dt_spec sleep = GPIO_DT_SPEC_GET(BUTTON0_NODE, gpios);
 static const struct gpio_dt_spec freq_up = GPIO_DT_SPEC_GET(BUTTON1_NODE, gpios);
 static const struct gpio_dt_spec freq_down = GPIO_DT_SPEC_GET(BUTTON2_NODE, gpios);
 static const struct gpio_dt_spec reset = GPIO_DT_SPEC_GET(BUTTON3_NODE, gpios);
+/*Call Back Config*/
+static struct gpio_callback sleep_cb;
+static struct gpio_callback freq_up_cb;
+static struct gpio_callback freq_down_cb;
+static struct gpio_callback reset_cb;
 /*Button Bool Values Here*/
 static bool sleep_detected = 0;
 static bool freq_up_detected = 0;
@@ -141,7 +146,7 @@ void main(void)
 	}	
 	gpio_init_callback(&reset_cb, reset_callback, BIT(reset.pin));
 	gpio_add_callback(reset.port, &reset_cb);
-	
+
 	while (1) {
 		ret = gpio_pin_toggle_dt(&heartbeat_led);
 		if (ret < 0) {
