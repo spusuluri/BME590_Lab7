@@ -9,8 +9,6 @@
 
 /* 1000 msec = 1 sec */
 /*Put #define stuff here*/
-#define LED_SLEEP_TIME_MS   500
-#define LED_ON_TIME_MS 500
 #define LED_ON_TIME_S 1
 
 /* The devicetree node identifier for the "led0" alias. */
@@ -147,11 +145,19 @@ void main(void)
 	}	
 	gpio_init_callback(&reset_cb, reset_callback, BIT(reset.pin));
 	gpio_add_callback(reset.port, &reset_cb);
-
+	int LED_STATE_COUNT = 1; /* Count what state LED is in*/
+	/*
+	Let's do this: Toggle heartbeat and Set the Other LEDs
+	Use Mod Division to Go through the 3 different states
+	*/
 	while (1) {
-		gpio_pin_toggle_dt(&heartbeat_led);
-		k_msleep(LED_ON_TIME_MS);
-		gpio_pin_toggle_dt(&heartbeat_led)
-		k_msleep(LED_SLEEP_TIME_MS)
+		if (LED_STATE_COUNT % 3 == 1){
+			gpio_pin_set_dt(&heartbeat_led, 1);
+			gpio_pin_set_dt(&buzzer_led, 1);
+			gpio_pin_set_dt(&ivdrip_led, 0);
+			gpio_pin_set_dt(&alarm_led, 0);
+		}
+		k_msleep(LED_ON_TIME_S * 1000);
+		LED_STATE_COUNT++;
 	}
 }
