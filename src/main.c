@@ -12,6 +12,7 @@
 #define LED_ON_TIME_S 1
 #define DEC_ON_TIME_S 0.1
 #define INC_ON_TIME_S 0.1
+#define HEART_BEAT_ON_TIME_S 1
 
 
 /* The devicetree node identifier for the "led0" alias. */
@@ -153,34 +154,77 @@ void main(void)
 	Let's do this: Toggle heartbeat and Set the Other LEDs
 	Use Mod Division to Go through the 3 different states
 	*/
+	int LED_timing = LED_ON_TIME_S;
 	while (1) {
 		if(freq_down_detected){
-			LED_ON_TIME_S = LED_ON_TIME_S + INC_ON_TIME_S ;
+			LED_timing = LED_timing + INC_ON_TIME_S ;
 		}
 		if(freq_up_detected){
-			LED_ON_TIME_S = LED_ON_TIME_S - DEC_ON_TIME_S ;
+			LED_timing = LED_timing - DEC_ON_TIME_S ;
 		}
 		if (LED_STATE_COUNT % 3 == 1){
-			gpio_pin_set_dt(&heartbeat_led, 1);
-			gpio_pin_set_dt(&buzzer_led, 1);
-			gpio_pin_set_dt(&ivdrip_led, 0);
-			gpio_pin_set_dt(&alarm_led, 0);
+			if (HEART_BEAT_ON_TIME_S - LED_timing ==0){
+				gpio_pin_set_dt(&heartbeat_led,1);
+				gpio_pin_set_dt(&buzzer_led,1);
+				gpio_pin_set_dt(&ivdrip_led,0);
+				gpio_pin_set_dt(&alarm_led,0);
+				k_msleep((LED_timing * 1000)/2);
+				gpio_pin_set_dt(&heartbeat_led, 0);
+				k_msleep((LED_timing * 1000)/2);
+			}
+			else if (HEART_BEAT_ON_TIME_S - LED_timing != 0){
+				gpio_pin_set_dt(&buzzer_led, 1);
+				gpio_pin_set_dt(&ivdrip_led,0);
+				gpio_pin_set_dt(&alarm_led,0);
+				k_msleep((HEART_BEAT_ON_TIME_S - LED_timing)*1000);
+				gpio_pin_set_dt(&heartbeat_led, 1);
+				k_msleep((LED_timing * 1000)/2);
+				gpio_pin_set_dt(&heartbeat_led, 0);
+				k_msleep((LED_timing * 1000)/2);
+			}
 		}
-		if (LED_STATE_COUNT % 3 ==2){
-			gpio_pin_set_dt(&heartbeat_led, 1);
-			gpio_pin_set_dt(&buzzer_led, 0);
-			gpio_pin_set_dt(&ivdrip_led,1);
-			gpio_pin_set_dt(&alarm_led,0);
+		if (LED_STATE_COUNT % 3 == 2){
+			if (HEART_BEAT_ON_TIME_S - LED_timing ==0){
+				gpio_pin_set_dt(&heartbeat_led,1);
+				gpio_pin_set_dt(&buzzer_led,0);
+				gpio_pin_set_dt(&ivdrip_led,1);
+				gpio_pin_set_dt(&alarm_led,0);
+				k_msleep((LED_timing * 1000)/2);
+				gpio_pin_set_dt(&heartbeat_led, 0);
+				k_msleep((LED_timing * 1000)/2);
+			}
+			else if (HEART_BEAT_ON_TIME_S - LED_timing != 0){
+				gpio_pin_set_dt(&buzzer_led, 0);
+				gpio_pin_set_dt(&ivdrip_led,1);
+				gpio_pin_set_dt(&alarm_led,0);
+				k_msleep((HEART_BEAT_ON_TIME_S - LED_timing)*1000);
+				gpio_pin_set_dt(&heartbeat_led, 1);
+				k_msleep((LED_timing * 1000)/2);
+				gpio_pin_set_dt(&heartbeat_led, 0);
+				k_msleep((LED_timing * 1000)/2);
+			}
 		}
-		if (LED_STATE_COUNT %3 ==0){
-			gpio_pin_set_dt(&heartbeat_led,1);
-			gpio_pin_set_dt(&buzzer_led,0);
-			gpio_pin_set_dt(&ivdrip_led,0);
-			gpio_pin_set_dt(&alarm_led,1);
+		if (LED_STATE_COUNT % 3 == 0){
+			if (HEART_BEAT_ON_TIME_S - LED_timing ==0){
+				gpio_pin_set_dt(&heartbeat_led,1);
+				gpio_pin_set_dt(&buzzer_led,0);
+				gpio_pin_set_dt(&ivdrip_led,0);
+				gpio_pin_set_dt(&alarm_led,1);
+				k_msleep((LED_timing * 1000)/2);
+				gpio_pin_set_dt(&heartbeat_led, 0);
+				k_msleep((LED_timing * 1000)/2);
+			}
+			else if (HEART_BEAT_ON_TIME_S - LED_timing != 0){
+				gpio_pin_set_dt(&buzzer_led, 0);
+				gpio_pin_set_dt(&ivdrip_led,0);
+				gpio_pin_set_dt(&alarm_led,1);
+				k_msleep((HEART_BEAT_ON_TIME_S - LED_timing)*1000);
+				gpio_pin_set_dt(&heartbeat_led, 1);
+				k_msleep((LED_timing * 1000)/2);
+				gpio_pin_set_dt(&heartbeat_led, 0);
+				k_msleep((LED_timing * 1000)/2);
+			}
 		}
-		k_msleep((LED_ON_TIME_S * 1000)/2);
-		gpio_pin_set_dt(&heartbeat_led, 0);
-		k_msleep((LED_ON_TIME_S * 1000)/2);
 		LED_STATE_COUNT++;
 	}
 }
