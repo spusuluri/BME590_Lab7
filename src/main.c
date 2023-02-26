@@ -157,6 +157,18 @@ void main(void)
 			gpio_pin_set_dt(&ivdrip_led, 0);
 			gpio_pin_set_dt(&alarm_led, 0);
 		}
+		if (LED_STATE_COUNT % 3 ==2){
+			gpio_pin_set_dt(&heartbeat_led, 1);
+			gpio_pin_set_dt(&buzzer_led, 0);
+			gpio_pin_set_dt(&ivdrip_led,1);
+			gpio_pin_set_dt(&alarm_led,0);
+		}
+		if (LED_STATE_COUNT %3 ==0){
+			gpio_pin_set_dt(&heartbeat_led,1);
+			gpio_pin_set_dt(&buzzer_led,0);
+			gpio_pin_set_dt(&ivdrip_led,0);
+			gpio_pin_set_dt(&alarm_led,1);
+		}
 		k_msleep((LED_ON_TIME_S * 1000)/2);
 		gpio_pin_set_dt(&heartbeat_led, 0);
 		k_msleep((LED_ON_TIME_S * 1000)/2);
