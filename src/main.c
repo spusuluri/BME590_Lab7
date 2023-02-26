@@ -10,6 +10,9 @@
 /* 1000 msec = 1 sec */
 /*Put #define stuff here*/
 #define LED_ON_TIME_S 1
+#define DEC_ON_TIME_S 0.1
+#define INC_ON_TIME_S 0.1
+
 
 /* The devicetree node identifier for the "led0" alias. */
 #define LED0_NODE DT_ALIAS(heartbeat)
@@ -151,6 +154,12 @@ void main(void)
 	Use Mod Division to Go through the 3 different states
 	*/
 	while (1) {
+		if(freq_down_detected){
+			LED_ON_TIME_S = LED_ON_TIME_S + INC_ON_TIME_S ;
+		}
+		if(freq_up_detected){
+			LED_ON_TIME_S = LED_ON_TIME_S - DEC_ON_TIME_S ;
+		}
 		if (LED_STATE_COUNT % 3 == 1){
 			gpio_pin_set_dt(&heartbeat_led, 1);
 			gpio_pin_set_dt(&buzzer_led, 1);
