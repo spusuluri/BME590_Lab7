@@ -158,7 +158,23 @@ void main(void)
 	*/
 	int LED_timing = LED_ON_TIME_S;
 	while (1) {
-
+		if (sleep_detected){
+			sleep_detected = 0;
+			while (1){
+				gpio_pin_set_dt(&error_led, 0);
+				gpio_pin_set_dt(&buzzer_led, 0);
+				gpio_pin_set_dt(&ivdrip_led,0);
+				gpio_pin_set_dt(&alarm_led, 0);
+				gpio_pin_set_dt(&heartbeat_led,1);
+				k_msleep((HEART_BEAT_ON_TIME_S/2)*1000);
+				gpio_pin_set_dt(&heartbeat_led, 0);
+				k_msleep((HEART_BEAT_ON_TIME_S/2)*1000);
+				if (sleep_detected){
+					sleep_detected=0;
+					break;
+				}
+			}
+		}
 		if (LED_timing > LED_MAX_ON_TIME_S || LED_timing < LED_MIN_ON_TIME_S){
 			while(1){
 				gpio_pin_set_dt(&error_led, 1);
@@ -171,15 +187,23 @@ void main(void)
 				k_msleep((HEART_BEAT_ON_TIME_S/2)*1000);
 				if (reset_detected){
 					LED_timing = LED_ON_TIME_S;
+					gpio_pin_set_dt(&error_led,0);
+					reset_detected=0;
 					break;
 				}
 			}
 		}
+		if (reset_detected){
+			LED_timing = LED_ON_TIME_S;
+			reset_detected=0;
+		}
 		if(freq_down_detected){
 			LED_timing = LED_timing + INC_ON_TIME_S ;
+			freq_down_detected = 0;
 		}
 		if(freq_up_detected){
 			LED_timing = LED_timing - DEC_ON_TIME_S ;
+			freq_up_detected=0;
 		}
 		if (LED_STATE_COUNT % 3 == 1){
 			if (HEART_BEAT_ON_TIME_S - LED_timing ==0){
