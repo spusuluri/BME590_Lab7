@@ -88,7 +88,7 @@ void main(void)
 		return;
 	}
 	/*Intiliaze LED Pins*/
-	ret = gpio_pin_configure_dt(&heartbeat_led, GPIO_OUTPUT_ACTIVE);
+	ret = gpio_pin_configure_dt(&heartbeat_led, GPIO_ACTIVE_LOW);
 	if (ret < 0) {
 		return;
 	}
