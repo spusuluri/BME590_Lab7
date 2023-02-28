@@ -92,19 +92,19 @@ void main(void)
 	if (ret < 0) {
 		return;
 	}
-	ret = gpio_pin_configure_dt(&buzzer_led, GPIO_OUTPUT_ACTIVE);
+	ret = gpio_pin_configure_dt(&buzzer_led, GPIO_ACTIVE_LOW);
 	if (ret < 0) {
 		return;
 	}
-	ret = gpio_pin_configure_dt(&ivdrip_led, GPIO_OUTPUT_ACTIVE);
+	ret = gpio_pin_configure_dt(&ivdrip_led, GPIO_ACTIVE_LOW);
 	if (ret < 0) {
 		return;
 	}
-	ret = gpio_pin_configure_dt(&alarm_led, GPIO_OUTPUT_ACTIVE);
+	ret = gpio_pin_configure_dt(&alarm_led, GPIO_ACTIVE_LOW);
 	if (ret < 0) {
 		return;
 	}
-	ret = gpio_pin_configure_dt(&error_led, GPIO_OUTPUT_ACTIVE);
+	ret = gpio_pin_configure_dt(&error_led, GPIO_ACTIVE_LOW);
 	if (ret < 0) {
 		return;
 	}
