@@ -156,7 +156,7 @@ void main(void)
 	Let's do this: Toggle heartbeat and Set the Other LEDs
 	Use Mod Division to Go through the 3 different states
 	*/
-	int LED_timing = LED_ON_TIME_S;
+	int LED_timing = LED_ON_TIME_S; /* This is so that it can change depending on button presses.*/
 	while (1) {
 		if (sleep_detected){
 			sleep_detected = 0;
